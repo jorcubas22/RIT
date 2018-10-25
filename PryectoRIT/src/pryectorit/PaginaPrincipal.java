@@ -5,6 +5,17 @@
  */
 package pryectorit;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Jorge
@@ -36,6 +47,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         TablaEscalafon = new javax.swing.JTable();
         BotonIrPagina = new javax.swing.JButton();
         BotonSiguienteEscalafon = new javax.swing.JButton();
+        BotonLeerArchivo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,6 +64,19 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
         TablaIndice.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
                 {null, null},
                 {null, null},
                 {null, null},
@@ -82,6 +107,13 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
         BotonSiguienteEscalafon.setText("Next");
 
+        BotonLeerArchivo.setText("Leer Archivos");
+        BotonLeerArchivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonLeerArchivoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -99,15 +131,14 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 .addComponent(BotonIrPagina, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(355, 355, 355))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(BotonSiguienteEscalafon))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 281, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BotonLeerArchivo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 281, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BotonSiguienteEscalafon, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(213, 213, 213))
         );
         layout.setVerticalGroup(
@@ -123,12 +154,17 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(BotonSiguienteEscalafon)
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BotonIndexar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BotonIrPagina, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(BotonSiguienteEscalafon)
+                        .addGap(32, 32, 32)
+                        .addComponent(BotonIrPagina, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(97, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(BotonLeerArchivo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(BotonIndexar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(63, 63, 63))))
         );
 
         pack();
@@ -137,6 +173,15 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     private void BotonIndexarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonIndexarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BotonIndexarActionPerformed
+
+    private void BotonLeerArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLeerArchivoActionPerformed
+        try {
+            // TODO add your handling code here:
+            Archivos();
+        } catch (IOException ex) {
+            Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_BotonLeerArchivoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -172,10 +217,53 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void Archivos() throws IOException{
+        final File folder = new File("C:/Users/Jorge/Documents/TEC/VII Semestre/RIT 2/TP2 - RIT - 2018ii");
+        List<String> ListaArchivos = new ArrayList<String>();
+        ListaArchivos = listFilesForFolder(folder);
+        System.out.println(ListaArchivos);
+        for(int i = 0; i < ListaArchivos.size(); i++){
+            TablaIndice.setValueAt(i+1, i, 0);
+            TablaIndice.setValueAt(ListaArchivos.get(i), i, 1);
+        }
+        LeeArchivos(ListaArchivos);
+    }
+    
+    public List listFilesForFolder(final File folder) {
+        List<String> ListaArchivos = new ArrayList<String>();
+        for (final File fileEntry : folder.listFiles()) {
+                if (fileEntry.isDirectory()) {
+                    listFilesForFolder(fileEntry);
+                 } else {
+                    ListaArchivos.add(fileEntry.getName());
+                    /*System.out.println(fileEntry.getName());*/
+            }
+        }
+        return ListaArchivos;
+    }
+    
+    public void LeeArchivos(List ListaArchivos) throws FileNotFoundException, IOException{
+        for(int i = 0; i < ListaArchivos.size(); i++){
+            byte[] buffer = new byte[100000];
+            FileInputStream inputStream = new FileInputStream("C:/Users/Jorge/Documents/TEC/VII Semestre/RIT 2/TP2 - RIT - 2018ii/" + ListaArchivos.get(i).toString());
+            int total = 0;
+            int nRead = 0;
+            while((nRead = inputStream.read(buffer)) != -1) {
+                System.out.println(new String(buffer));
+                total += nRead;
+            }
+            inputStream.close();
+            System.out.println("Read " + total + " bytes");
+        }
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonIndexar;
     private javax.swing.JButton BotonIrPagina;
+    private javax.swing.JButton BotonLeerArchivo;
     private javax.swing.JButton BotonSiguienteEscalafon;
     private javax.swing.JLabel LabelArchivo;
     private javax.swing.JLabel LabelEscalafon;
