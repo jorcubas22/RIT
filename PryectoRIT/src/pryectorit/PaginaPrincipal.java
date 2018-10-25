@@ -171,7 +171,12 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BotonIndexarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonIndexarActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            Indexar();
+        } catch (IOException ex) {
+            Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_BotonIndexarActionPerformed
 
     private void BotonLeerArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLeerArchivoActionPerformed
@@ -227,7 +232,6 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             TablaIndice.setValueAt(i+1, i, 0);
             TablaIndice.setValueAt(ListaArchivos.get(i), i, 1);
         }
-        LeeArchivos(ListaArchivos);
     }
     
     public List listFilesForFolder(final File folder) {
@@ -243,19 +247,25 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         return ListaArchivos;
     }
     
-    public void LeeArchivos(List ListaArchivos) throws FileNotFoundException, IOException{
-        for(int i = 0; i < ListaArchivos.size(); i++){
-            byte[] buffer = new byte[100000];
-            FileInputStream inputStream = new FileInputStream("C:/Users/Jorge/Documents/TEC/VII Semestre/RIT 2/TP2 - RIT - 2018ii/" + ListaArchivos.get(i).toString());
-            int total = 0;
-            int nRead = 0;
-            while((nRead = inputStream.read(buffer)) != -1) {
-                System.out.println(new String(buffer));
-                total += nRead;
-            }
-            inputStream.close();
-            System.out.println("Read " + total + " bytes");
+    public void Indexar() throws IOException{
+        final File folder = new File("C:/Users/Jorge/Documents/TEC/VII Semestre/RIT 2/TP2 - RIT - 2018ii");
+        List<String> ListaArchivos = new ArrayList<String>();
+        ListaArchivos = listFilesForFolder(folder);        
+        int FilaSeleccionada = TablaIndice.getSelectedRow();
+        LeeArchivos(ListaArchivos.get(FilaSeleccionada));
+    }
+    
+    public void LeeArchivos(String ArchivoSeleccionado) throws FileNotFoundException, IOException{
+        byte[] buffer = new byte[100000000];
+        FileInputStream inputStream = new FileInputStream("C:/Users/Jorge/Documents/TEC/VII Semestre/RIT 2/TP2 - RIT - 2018ii/" + ArchivoSeleccionado);
+        int total = 0;
+        int nRead = 0;
+        while((nRead = inputStream.read(buffer)) != -1) {
+            System.out.println(new String(buffer));
+            total += nRead;
         }
+        inputStream.close();
+        System.out.println("Read " + total + " bytes");
     }
     
     
