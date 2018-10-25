@@ -6,7 +6,9 @@
 package pryectorit;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -23,18 +25,6 @@ public class PryectoRIT {
         nuevoArchivo.NombreArchivo = "chmod.1";
         nuevoArchivo.palabras = new String [] {"hola", "perro"};
         System.out.println(nuevoArchivo.palabras[1]);
-        final File folder = new File("C:/Users/Jorge/Documents/TEC/VII Semestre/RIT 2/TP2 - RIT - 2018ii");
-        listFilesForFolder(folder);
     }
     
-    public static void listFilesForFolder(final File folder) {
-        System.out.println("entro");
-        for (final File fileEntry : folder.listFiles()) {
-                if (fileEntry.isDirectory()) {
-                listFilesForFolder(fileEntry);
-                 } else {
-                System.out.println(fileEntry.getName());
-                }
-            }
-        }
-    }
+}
