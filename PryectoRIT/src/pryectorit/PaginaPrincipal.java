@@ -5,16 +5,29 @@
  */
 package pryectorit;
 
+import java.awt.Desktop;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /**
  *
@@ -176,6 +189,8 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             Indexar();
         } catch (IOException ex) {
             Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_BotonIndexarActionPerformed
 
@@ -247,7 +262,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         return ListaArchivos;
     }
     
-    public void Indexar() throws IOException{
+    public void Indexar() throws IOException, FileNotFoundException, URISyntaxException{
         final File folder = new File("C:/Users/Jorge/Documents/TEC/VII Semestre/RIT 2/TP2 - RIT - 2018ii");
         List<String> ListaArchivos = new ArrayList<String>();
         ListaArchivos = listFilesForFolder(folder);        
@@ -255,19 +270,154 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         LeeArchivos(ListaArchivos.get(FilaSeleccionada));
     }
     
-    public void LeeArchivos(String ArchivoSeleccionado) throws FileNotFoundException, IOException{
-        byte[] buffer = new byte[100000000];
-        FileInputStream inputStream = new FileInputStream("C:/Users/Jorge/Documents/TEC/VII Semestre/RIT 2/TP2 - RIT - 2018ii/" + ArchivoSeleccionado);
-        int total = 0;
-        int nRead = 0;
-        while((nRead = inputStream.read(buffer)) != -1) {
-            System.out.println(new String(buffer));
-            total += nRead;
+    public void LeeArchivos(String ArchivoSeleccionado) throws FileNotFoundException, IOException, URISyntaxException{
+        File f = new File("C:/Users/Jorge/Documents/TEC/VII Semestre/RIT 2/TP2 - RIT - 2018ii/" +ArchivoSeleccionado);
+        BufferedReader br = new BufferedReader(new FileReader(f)); 
+        String st; 
+        boolean banderaBody = false;
+        boolean salite = false;
+        List<String> where = new ArrayList<String>();
+        while ((st = br.readLine()) != null){
+            //System.out.println(st); 
+            String[] words = st.split(" ");
+            for(int i =0; i < words.length; i++) {
+                where.add(words[i]);
+                if(words[i].equals("<!DOCTYPE")){
+                    //System.out.println(words[i]);
+                    banderaBody = true;
+                }
+                if(words[i].equals("</html>")){
+                    //System.out.println(where);
+                    EscribeArchivo(where);
+                    banderaBody = false;
+                    salite = true;
+                    break;
+                }
+            }
+            if(salite == true){
+                break;
+            }
         }
-        inputStream.close();
-        System.out.println("Read " + total + " bytes");
+        //System.out.println(where.size());
     }
     
+    
+    public void EscribeArchivo(List<String> ArchivoEscribir) throws URISyntaxException, IOException{
+                String FILENAME = "C:\\Users\\Jorge\\Documents\\TEC\\filename.html";
+        	try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILENAME))) {
+                        for(int i = 0; i < ArchivoEscribir.size(); i++){
+                            bw.write(ArchivoEscribir.get(i));
+                            bw.write(" ");
+                        }
+			System.out.println("Done");
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+                File sourceFile = new File("C:\\Users\\Jorge\\Documents\\TEC\\filename.html");
+                org.jsoup.nodes.Document doc = Jsoup.parse(sourceFile, "UTF-8");
+                
+                Element body = doc.body();
+                Document DocumentoRecuperado = Jsoup.parse(body.wholeText());
+                Element body2 = DocumentoRecuperado.body();
+                String Cuerpo = body2.ownText();
+                String[] CuerpoPalabras = Cuerpo.split(" ");
+                
+                /* Buscar Headers*/
+                Elements buscaHeaders = doc.select("h1, h2, h3, h4, h5, h6, h7, h8, h9");
+                Elements h1Tags = buscaHeaders.select("h1");
+                List<String> h1s = new ArrayList<String>();
+                Elements h2Tags = buscaHeaders.select("h2");
+                List<String> h2s = new ArrayList<String>();
+                Elements h3Tags = buscaHeaders.select("h3");
+                List<String> h3s = new ArrayList<String>();
+                Elements h4Tags = buscaHeaders.select("h4");
+                List<String> h4s = new ArrayList<String>();
+                Elements h5Tags = buscaHeaders.select("h5");
+                List<String> h5s = new ArrayList<String>();
+                Elements h6Tags = buscaHeaders.select("h6");
+                List<String> h6s = new ArrayList<String>();
+                Elements h7Tags = buscaHeaders.select("h7");
+                List<String> h7s = new ArrayList<String>();
+                Elements h8Tags = buscaHeaders.select("h8");
+                List<String> h8s = new ArrayList<String>();
+                Elements h9Tags = buscaHeaders.select("h9");
+                List<String> h9s = new ArrayList<String>();
+                
+                
+                for(int i = 0; i < h1Tags.size(); i++){
+                    String temporal2 = h1Tags.get(i).ownText();
+                    String[] words = temporal2.split(" ");
+                    h1s.addAll(Arrays.asList(words));
+                }
+                for(int i = 0; i < h2Tags.size(); i++){
+                    String temporal2 = h2Tags.get(i).ownText();
+                    String[] words = temporal2.split(" ");
+                    h2s.addAll(Arrays.asList(words));
+                }
+                for(int i = 0; i < h3Tags.size(); i++){
+                    String temporal2 = h3Tags.get(i).ownText();
+                    String[] words = temporal2.split(" ");
+                    h3s.addAll(Arrays.asList(words));
+                }                
+                for(int i = 0; i < h4Tags.size(); i++){
+                    String temporal2 = h4Tags.get(i).ownText();
+                    String[] words = temporal2.split(" ");
+                    h4s.addAll(Arrays.asList(words));
+                }
+                for(int i = 0; i < h5Tags.size(); i++){
+                    String temporal2 = h5Tags.get(i).ownText();
+                    String[] words = temporal2.split(" ");
+                    h5s.addAll(Arrays.asList(words));
+                }
+                for(int i = 0; i < h6Tags.size(); i++){
+                    String temporal2 = h6Tags.get(i).ownText();
+                    String[] words = temporal2.split(" ");
+                    h6s.addAll(Arrays.asList(words));
+                }
+                for(int i = 0; i < h7Tags.size(); i++){
+                    String temporal2 = h7Tags.get(i).ownText();;
+                    String[] words = temporal2.split(" ");
+                    h7s.addAll(Arrays.asList(words));
+                }
+                for(int i = 0; i < h8Tags.size(); i++){
+                    String temporal2 = h8Tags.get(i).ownText();
+                    String[] words = temporal2.split(" ");
+                    h8s.addAll(Arrays.asList(words));
+                }
+                for(int i = 0; i < h9Tags.size(); i++){
+                    String temporal2 = h9Tags.get(i).ownText();
+                    String[] words = temporal2.split(" ");
+                    h9s.addAll(Arrays.asList(words));
+                }
+                
+                /* Busca Títulos*/
+                Elements Title = doc.select("title");
+                List<String> Titulos = new ArrayList<String>();
+                for(int i = 0; i < Title.size(); i++){
+                    String temporal2 = Title.get(i).ownText();
+                    String[] words = temporal2.split(" ");
+                    Titulos.addAll(Arrays.asList(words));
+                }                
+                
+                /* Busqueda de <a>*/
+                Elements ref = doc.select("a");
+                List<String> HyperLinks = new ArrayList<String>();
+                String titulop;
+                for(int i = 0; i < ref.size(); i++){
+                    String temporal2 = ref.get(i).ownText();
+                    titulop = temporal2;
+                    String[] words = temporal2.split(" ");
+                    HyperLinks.addAll(Arrays.asList(words));
+                }
+                
+                ObjetoArchivos tituloc = new ObjetoArchivos(Cuerpo, Titulos, CuerpoPalabras, HyperLinks, h1s, h2s, h3s, h4s, h5s, h6s, h7s, h8s, h9s);
+                // Utilizado Para Abrir Archivo HTML desde Java
+                /*String url = "file:///C:/Users/Jorge/Documents/TEC/filename.html";
+                URI oURL = new URI(url);
+                Desktop.getDesktop().browse(oURL);*/
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
