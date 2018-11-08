@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -274,35 +275,31 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         File f = new File("C:/Users/Jorge/Documents/TEC/VII Semestre/RIT 2/TP2 - RIT - 2018ii/" +ArchivoSeleccionado);
         BufferedReader br = new BufferedReader(new FileReader(f)); 
         String st; 
-        boolean banderaBody = false;
-        boolean salite = false;
+        int Comienza = 0;
+        int Finaliza = 0;
+        int contador = 0;
+        //boolean salite = false;
         List<String> where = new ArrayList<String>();
         while ((st = br.readLine()) != null){
-            //System.out.println(st); 
+            contador+=1;
             String[] words = st.split(" ");
             for(int i =0; i < words.length; i++) {
                 where.add(words[i]);
                 if(words[i].equals("<!DOCTYPE")){
-                    //System.out.println(words[i]);
-                    banderaBody = true;
+                    Comienza = contador;
                 }
                 if(words[i].equals("</html>")){
-                    //System.out.println(where);
-                    EscribeArchivo(where);
-                    banderaBody = false;
-                    salite = true;
-                    break;
+                    Finaliza = contador;
+                    EscribeArchivo(where, Comienza, Finaliza);
+                    where = new ArrayList<String>();
                 }
-            }
-            if(salite == true){
-                break;
             }
         }
         //System.out.println(where.size());
     }
     
     
-    public void EscribeArchivo(List<String> ArchivoEscribir) throws URISyntaxException, IOException{
+    public void EscribeArchivo(List<String> ArchivoEscribir, int Comienza, int Finaliza) throws URISyntaxException, IOException{
                 String FILENAME = "C:\\Users\\Jorge\\Documents\\TEC\\filename.html";
         	try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILENAME))) {
                         for(int i = 0; i < ArchivoEscribir.size(); i++){
@@ -322,97 +319,133 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 Document DocumentoRecuperado = Jsoup.parse(body.wholeText());
                 Element body2 = DocumentoRecuperado.body();
                 String Cuerpo = body2.ownText();
-                String[] CuerpoPalabras = Cuerpo.split(" ");
+                Cuerpo = StringUtils.stripAccents(Cuerpo);
                 
                 /* Buscar Headers*/
                 Elements buscaHeaders = doc.select("h1, h2, h3, h4, h5, h6, h7, h8, h9");
                 Elements h1Tags = buscaHeaders.select("h1");
-                List<String> h1s = new ArrayList<String>();
+                String h1 = "";
+                //List<String> h1s = new ArrayList<String>();
                 Elements h2Tags = buscaHeaders.select("h2");
-                List<String> h2s = new ArrayList<String>();
+                String h2 = "";
                 Elements h3Tags = buscaHeaders.select("h3");
-                List<String> h3s = new ArrayList<String>();
+                String h3 = "";
                 Elements h4Tags = buscaHeaders.select("h4");
-                List<String> h4s = new ArrayList<String>();
+                String h4 = "";
                 Elements h5Tags = buscaHeaders.select("h5");
-                List<String> h5s = new ArrayList<String>();
+                String h5 = "";
                 Elements h6Tags = buscaHeaders.select("h6");
-                List<String> h6s = new ArrayList<String>();
+                String h6 = "";
                 Elements h7Tags = buscaHeaders.select("h7");
-                List<String> h7s = new ArrayList<String>();
+                String h7 = "";
                 Elements h8Tags = buscaHeaders.select("h8");
-                List<String> h8s = new ArrayList<String>();
+                String h8 = "";
                 Elements h9Tags = buscaHeaders.select("h9");
-                List<String> h9s = new ArrayList<String>();
-                
+                String h9 = "";
                 
                 for(int i = 0; i < h1Tags.size(); i++){
                     String temporal2 = h1Tags.get(i).ownText();
-                    String[] words = temporal2.split(" ");
-                    h1s.addAll(Arrays.asList(words));
+                    h1 += temporal2 + " ";
+                    /*String[] words = temporal2.split(" ");
+                    h1s.addAll(Arrays.asList(words));*/
                 }
+                System.out.println("Header h1: ");
+                h1 = StringUtils.stripAccents(h1);
+                System.out.println(h1);
                 for(int i = 0; i < h2Tags.size(); i++){
                     String temporal2 = h2Tags.get(i).ownText();
-                    String[] words = temporal2.split(" ");
-                    h2s.addAll(Arrays.asList(words));
+                    h2 += temporal2 + " ";
                 }
+                h2 = StringUtils.stripAccents(h2);
+                System.out.println("Header h2: ");
+                System.out.println(h2);                
                 for(int i = 0; i < h3Tags.size(); i++){
                     String temporal2 = h3Tags.get(i).ownText();
-                    String[] words = temporal2.split(" ");
-                    h3s.addAll(Arrays.asList(words));
+                    h3 += temporal2 + " ";
                 }                
+                System.out.println("Header h3: ");
+                h3 = StringUtils.stripAccents(h3);
+                System.out.println(h3);
+                
                 for(int i = 0; i < h4Tags.size(); i++){
                     String temporal2 = h4Tags.get(i).ownText();
-                    String[] words = temporal2.split(" ");
-                    h4s.addAll(Arrays.asList(words));
+                    h4 += temporal2 + " ";
                 }
+                System.out.println("Header h4: ");
+                h4 = StringUtils.stripAccents(h4);
+                System.out.println(h4);
+                
                 for(int i = 0; i < h5Tags.size(); i++){
                     String temporal2 = h5Tags.get(i).ownText();
-                    String[] words = temporal2.split(" ");
-                    h5s.addAll(Arrays.asList(words));
+                    h5 += temporal2 + " ";
                 }
+                System.out.println("Header h5: ");
+                h5 = StringUtils.stripAccents(h5);
+                System.out.println(h5);
+                
                 for(int i = 0; i < h6Tags.size(); i++){
                     String temporal2 = h6Tags.get(i).ownText();
-                    String[] words = temporal2.split(" ");
-                    h6s.addAll(Arrays.asList(words));
+                    h6 += temporal2 + " ";
                 }
+                System.out.println("Header h6: ");
+                h6 = StringUtils.stripAccents(h6);
+                System.out.println(h6);
+                
                 for(int i = 0; i < h7Tags.size(); i++){
                     String temporal2 = h7Tags.get(i).ownText();;
-                    String[] words = temporal2.split(" ");
-                    h7s.addAll(Arrays.asList(words));
+                    h7 += temporal2 + " ";
                 }
+                h7 = StringUtils.stripAccents(h7);
+                System.out.println("Header h7: ");
+                System.out.println(h7);
+                
                 for(int i = 0; i < h8Tags.size(); i++){
                     String temporal2 = h8Tags.get(i).ownText();
-                    String[] words = temporal2.split(" ");
-                    h8s.addAll(Arrays.asList(words));
+                    h8 += temporal2 + " ";
                 }
+                h8 = StringUtils.stripAccents(h8);
+                System.out.println("Header h8: ");
+                System.out.println(h8);
+                
                 for(int i = 0; i < h9Tags.size(); i++){
                     String temporal2 = h9Tags.get(i).ownText();
-                    String[] words = temporal2.split(" ");
-                    h9s.addAll(Arrays.asList(words));
+                    h9 += temporal2 + " ";
                 }
+                h9 = StringUtils.stripAccents(h9);
+                System.out.println("Header h9: ");
+                System.out.println(h9);
                 
                 /* Busca Títulos*/
                 Elements Title = doc.select("title");
-                List<String> Titulos = new ArrayList<String>();
+                String titulo = "";
                 for(int i = 0; i < Title.size(); i++){
                     String temporal2 = Title.get(i).ownText();
-                    String[] words = temporal2.split(" ");
-                    Titulos.addAll(Arrays.asList(words));
-                }                
+                    titulo += temporal2 + " ";
+                }
+                titulo = StringUtils.stripAccents(titulo);
+                System.out.println("Titulos: ");
+                System.out.println(titulo);
                 
                 /* Busqueda de <a>*/
-                Elements ref = doc.select("a");
-                List<String> HyperLinks = new ArrayList<String>();
-                String titulop;
+                Elements ref = doc.select("a[href]");
+                String HyperLink = "";
                 for(int i = 0; i < ref.size(); i++){
                     String temporal2 = ref.get(i).ownText();
-                    titulop = temporal2;
-                    String[] words = temporal2.split(" ");
-                    HyperLinks.addAll(Arrays.asList(words));
+                    HyperLink += temporal2 + " ";
                 }
+                System.out.println("HyperLinks <a>: ");
+                HyperLink = StringUtils.stripAccents(HyperLink);
+                HyperLink = HyperLink.replaceAll("[^\\p{IsDigit}\\p{IsAlphabetic}]", " ");
+                System.out.println(HyperLink);
                 
-                ObjetoArchivos tituloc = new ObjetoArchivos(Cuerpo, Titulos, CuerpoPalabras, HyperLinks, h1s, h2s, h3s, h4s, h5s, h6s, h7s, h8s, h9s);
+                
+                System.out.println("Comienza: ");
+                System.out.println(Comienza);
+                
+                System.out.println("Finaliza: ");
+                System.out.println(Finaliza);
+                
+                //ObjetoArchivos tituloc = new ObjetoArchivos(Cuerpo, Titulos, CuerpoPalabras, HyperLinks, h1s, h2s, h3s, h4s, h5s, h6s, h7s, h8s, h9s);
                 // Utilizado Para Abrir Archivo HTML desde Java
                 /*String url = "file:///C:/Users/Jorge/Documents/TEC/filename.html";
                 URI oURL = new URI(url);
