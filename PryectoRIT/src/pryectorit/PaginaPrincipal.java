@@ -450,6 +450,8 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 /*String url = "file:///C:/Users/Jorge/Documents/TEC/filename.html";
                 URI oURL = new URI(url);
                 Desktop.getDesktop().browse(oURL);*/
+                
+                
     }
     
 
