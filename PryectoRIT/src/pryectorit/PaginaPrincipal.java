@@ -16,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +26,12 @@ import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -186,8 +193,14 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
     private void BotonIndexarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonIndexarActionPerformed
         try {
-            // TODO add your handling code here:
-            Indexar();
+            try {
+                // TODO add your handling code here:
+                Indexar();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (IOException ex) {
             Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (URISyntaxException ex) {
@@ -240,7 +253,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }
     
     public void Archivos() throws IOException{
-        final File folder = new File("C:/Users/Jorge/Documents/TEC/VII Semestre/RIT 2/TP2 - RIT - 2018ii");
+        final File folder = new File("C:/Users/AARON/Documents/TEC/RIT/TP2 - RIT - 2018ii");
         List<String> ListaArchivos = new ArrayList<String>();
         ListaArchivos = listFilesForFolder(folder);
         System.out.println(ListaArchivos);
@@ -263,16 +276,28 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         return ListaArchivos;
     }
     
-    public void Indexar() throws IOException, FileNotFoundException, URISyntaxException{
-        final File folder = new File("C:/Users/Jorge/Documents/TEC/VII Semestre/RIT 2/TP2 - RIT - 2018ii");
+    public void Indexar() throws IOException, FileNotFoundException, URISyntaxException, ParseException{
+        final File folder = new File("C:/Users/AARON/Documents/TEC/RIT/TP2 - RIT - 2018ii");
         List<String> ListaArchivos = new ArrayList<String>();
         ListaArchivos = listFilesForFolder(folder);        
         int FilaSeleccionada = TablaIndice.getSelectedRow();
         LeeArchivos(ListaArchivos.get(FilaSeleccionada));
     }
     
-    public void LeeArchivos(String ArchivoSeleccionado) throws FileNotFoundException, IOException, URISyntaxException{
-        File f = new File("C:/Users/Jorge/Documents/TEC/VII Semestre/RIT 2/TP2 - RIT - 2018ii/" +ArchivoSeleccionado);
+    public void LeeArchivos(String ArchivoSeleccionado) throws FileNotFoundException, IOException, URISyntaxException, ParseException{
+        
+                
+        StandardAnalyzer analyzer = new StandardAnalyzer();
+
+        String INDEX_DIRECTORY = "C:/Users/AARON/Documents/TEC/RIT/RIT/PryectoRIT/indices";
+        Directory index = FSDirectory.open(Paths.get(INDEX_DIRECTORY));
+        Arrays.stream(new File("C:/Users/AARON/Documents/TEC/RIT/RIT/PryectoRIT/indices").listFiles()).forEach(File::delete);
+
+        IndexWriterConfig config = new IndexWriterConfig(analyzer);
+
+        IndexWriter w = new IndexWriter(index, config);
+        
+        File f = new File("C:/Users/AARON/Documents/TEC/RIT/TP2 - RIT - 2018ii/" +ArchivoSeleccionado);
         BufferedReader br = new BufferedReader(new FileReader(f)); 
         String st; 
         int Comienza = 0;
@@ -290,17 +315,22 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 }
                 if(words[i].equals("</html>")){
                     Finaliza = contador;
-                    EscribeArchivo(where, Comienza, Finaliza);
+                    EscribeArchivo(w, where, Comienza, Finaliza);
                     where = new ArrayList<String>();
                 }
             }
         }
         //System.out.println(where.size());
+        
+        w.close();
+        
+        Lucene lucene = new Lucene();
+        lucene.buscar("C:/Users/AARON/Documents/TEC/RIT/RIT/PryectoRIT/indices", "wikipedia");
     }
     
     
-    public void EscribeArchivo(List<String> ArchivoEscribir, int Comienza, int Finaliza) throws URISyntaxException, IOException{
-                String FILENAME = "C:\\Users\\Jorge\\Documents\\TEC\\filename.html";
+    public void EscribeArchivo(IndexWriter w, List<String> ArchivoEscribir, int Comienza, int Finaliza) throws URISyntaxException, IOException{
+                String FILENAME = "C:/Users/AARON/Documents/TEC/RIT/TP2 - RIT - 2018ii/filename.html";
         	try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILENAME))) {
                         for(int i = 0; i < ArchivoEscribir.size(); i++){
                             bw.write(ArchivoEscribir.get(i));
@@ -312,7 +342,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
 			e.printStackTrace();
 		}
-                File sourceFile = new File("C:\\Users\\Jorge\\Documents\\TEC\\filename.html");
+                File sourceFile = new File("C:/Users/AARON/Documents/TEC/RIT/TP2 - RIT - 2018ii/filename.html");
                 org.jsoup.nodes.Document doc = Jsoup.parse(sourceFile, "UTF-8");
                 
                 Element body = doc.body();
@@ -324,96 +354,55 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 /* Buscar Headers*/
                 Elements buscaHeaders = doc.select("h1, h2, h3, h4, h5, h6, h7, h8, h9");
                 Elements h1Tags = buscaHeaders.select("h1");
-                String h1 = "";
+                String headers = "";
                 //List<String> h1s = new ArrayList<String>();
                 Elements h2Tags = buscaHeaders.select("h2");
-                String h2 = "";
                 Elements h3Tags = buscaHeaders.select("h3");
-                String h3 = "";
                 Elements h4Tags = buscaHeaders.select("h4");
-                String h4 = "";
                 Elements h5Tags = buscaHeaders.select("h5");
-                String h5 = "";
                 Elements h6Tags = buscaHeaders.select("h6");
-                String h6 = "";
                 Elements h7Tags = buscaHeaders.select("h7");
-                String h7 = "";
                 Elements h8Tags = buscaHeaders.select("h8");
-                String h8 = "";
                 Elements h9Tags = buscaHeaders.select("h9");
-                String h9 = "";
                 
                 for(int i = 0; i < h1Tags.size(); i++){
                     String temporal2 = h1Tags.get(i).ownText();
-                    h1 += temporal2 + " ";
+                    headers += temporal2 + " ";
                     /*String[] words = temporal2.split(" ");
                     h1s.addAll(Arrays.asList(words));*/
                 }
-                System.out.println("Header h1: ");
-                h1 = StringUtils.stripAccents(h1);
-                System.out.println(h1);
                 for(int i = 0; i < h2Tags.size(); i++){
                     String temporal2 = h2Tags.get(i).ownText();
-                    h2 += temporal2 + " ";
-                }
-                h2 = StringUtils.stripAccents(h2);
-                System.out.println("Header h2: ");
-                System.out.println(h2);                
+                    headers += temporal2 + " ";
+                }              
                 for(int i = 0; i < h3Tags.size(); i++){
                     String temporal2 = h3Tags.get(i).ownText();
-                    h3 += temporal2 + " ";
-                }                
-                System.out.println("Header h3: ");
-                h3 = StringUtils.stripAccents(h3);
-                System.out.println(h3);
-                
+                    headers += temporal2 + " ";
+                }                                
                 for(int i = 0; i < h4Tags.size(); i++){
                     String temporal2 = h4Tags.get(i).ownText();
-                    h4 += temporal2 + " ";
+                    headers += temporal2 + " ";
                 }
-                System.out.println("Header h4: ");
-                h4 = StringUtils.stripAccents(h4);
-                System.out.println(h4);
-                
                 for(int i = 0; i < h5Tags.size(); i++){
                     String temporal2 = h5Tags.get(i).ownText();
-                    h5 += temporal2 + " ";
+                    headers += temporal2 + " ";
                 }
-                System.out.println("Header h5: ");
-                h5 = StringUtils.stripAccents(h5);
-                System.out.println(h5);
-                
                 for(int i = 0; i < h6Tags.size(); i++){
                     String temporal2 = h6Tags.get(i).ownText();
-                    h6 += temporal2 + " ";
-                }
-                System.out.println("Header h6: ");
-                h6 = StringUtils.stripAccents(h6);
-                System.out.println(h6);
-                
+                    headers += temporal2 + " ";
+                }   
                 for(int i = 0; i < h7Tags.size(); i++){
-                    String temporal2 = h7Tags.get(i).ownText();;
-                    h7 += temporal2 + " ";
-                }
-                h7 = StringUtils.stripAccents(h7);
-                System.out.println("Header h7: ");
-                System.out.println(h7);
-                
+                    String temporal2 = h7Tags.get(i).ownText();
+                    headers += temporal2 + " ";
+                }               
                 for(int i = 0; i < h8Tags.size(); i++){
                     String temporal2 = h8Tags.get(i).ownText();
-                    h8 += temporal2 + " ";
-                }
-                h8 = StringUtils.stripAccents(h8);
-                System.out.println("Header h8: ");
-                System.out.println(h8);
-                
+                    headers += temporal2 + " ";
+                }               
                 for(int i = 0; i < h9Tags.size(); i++){
                     String temporal2 = h9Tags.get(i).ownText();
-                    h9 += temporal2 + " ";
+                    headers += temporal2 + " ";
                 }
-                h9 = StringUtils.stripAccents(h9);
-                System.out.println("Header h9: ");
-                System.out.println(h9);
                 
                 /* Busca Títulos*/
                 Elements Title = doc.select("title");
@@ -423,8 +412,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                     titulo += temporal2 + " ";
                 }
                 titulo = StringUtils.stripAccents(titulo);
-                System.out.println("Titulos: ");
-                System.out.println(titulo);
+
                 
                 /* Busqueda de <a>*/
                 Elements ref = doc.select("a[href]");
@@ -433,23 +421,23 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                     String temporal2 = ref.get(i).ownText();
                     HyperLink += temporal2 + " ";
                 }
-                System.out.println("HyperLinks <a>: ");
+                
                 HyperLink = StringUtils.stripAccents(HyperLink);
                 HyperLink = HyperLink.replaceAll("[^\\p{IsDigit}\\p{IsAlphabetic}]", " ");
-                System.out.println(HyperLink);
                 
                 
-                System.out.println("Comienza: ");
-                System.out.println(Comienza);
                 
-                System.out.println("Finaliza: ");
-                System.out.println(Finaliza);
                 
                 //ObjetoArchivos tituloc = new ObjetoArchivos(Cuerpo, Titulos, CuerpoPalabras, HyperLinks, h1s, h2s, h3s, h4s, h5s, h6s, h7s, h8s, h9s);
                 // Utilizado Para Abrir Archivo HTML desde Java
                 /*String url = "file:///C:/Users/Jorge/Documents/TEC/filename.html";
                 URI oURL = new URI(url);
                 Desktop.getDesktop().browse(oURL);*/
+                
+                
+                Lucene lucene = new Lucene();
+                lucene.indexar(w, titulo, Cuerpo, HyperLink, headers, Integer.toString(Comienza), Integer.toString(Finaliza));
+                
                 
                 
     }
