@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static javax.lang.model.type.TypeKind.NULL;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +44,8 @@ import org.jsoup.select.Elements;
  * @author Jorge
  */
 public class PaginaPrincipal extends javax.swing.JFrame {
-
+    public static int escalafonTemporal = 1;
+    public static ArrayList<String> escalafon = new ArrayList<String>();
     /**
      * Creates new form PaginaPrincipal
      */
@@ -73,8 +76,9 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         TextIndice = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
         TextQuery = new javax.swing.JTextArea();
-        BotonQuery = new javax.swing.JButton();
+        BotonBuscarQuery = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        BotonPrevioEscalafon = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -143,7 +147,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 {null, null}
             },
             new String [] {
-                "Posición Escalafon", "Nombre Archivo"
+                "Posición", "Nombre Archivo"
             }
         ));
         jScrollPane2.setViewportView(TablaEscalafon);
@@ -156,6 +160,11 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         });
 
         BotonSiguienteEscalafon.setText("Siguiente");
+        BotonSiguienteEscalafon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonSiguienteEscalafonActionPerformed(evt);
+            }
+        });
 
         BotonLeerArchivo.setText("Leer Archivos");
         BotonLeerArchivo.addActionListener(new java.awt.event.ActionListener() {
@@ -172,14 +181,21 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         TextQuery.setRows(5);
         jScrollPane4.setViewportView(TextQuery);
 
-        BotonQuery.setText("Buscar");
-        BotonQuery.addActionListener(new java.awt.event.ActionListener() {
+        BotonBuscarQuery.setText("Buscar");
+        BotonBuscarQuery.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonQueryActionPerformed(evt);
+                BotonBuscarQueryActionPerformed(evt);
             }
         });
 
         jLabel1.setText("Dirección del indice");
+
+        BotonPrevioEscalafon.setText("Previo");
+        BotonPrevioEscalafon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonPrevioEscalafonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -196,7 +212,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 .addComponent(BotonIndexar, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(BotonIrPagina, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(373, 373, 373))
+                .addGap(252, 252, 252))
             .addGroup(layout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -207,10 +223,13 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(BotonQuery, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(BotonSiguienteEscalafon, javax.swing.GroupLayout.Alignment.TRAILING)))
+                        .addComponent(BotonBuscarQuery, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(BotonPrevioEscalafon)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(BotonSiguienteEscalafon)))
                 .addGap(70, 70, 70))
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
@@ -242,7 +261,9 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(BotonLeerArchivo)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(BotonLeerArchivo)
+                            .addComponent(BotonPrevioEscalafon))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -253,7 +274,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(BotonSiguienteEscalafon)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(BotonQuery)
+                        .addComponent(BotonBuscarQuery)
                         .addGap(124, 124, 124))))
         );
 
@@ -288,11 +309,28 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
     private void BotonIrPaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonIrPaginaActionPerformed
         // TODO add your handling code here:
+        
+        int agarrada = TablaEscalafon.getSelectedRow();
+        String BodyEscalafon = escalafon.get(agarrada).split(",,,")[0];
+        System.out.println(BodyEscalafon);
+        
     }//GEN-LAST:event_BotonIrPaginaActionPerformed
 
-    private void BotonQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonQueryActionPerformed
+    private void BotonBuscarQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarQueryActionPerformed
         // TODO add your handling code here:
-        ArrayList<String> escalafon = new ArrayList<String>();
+        escalafonTemporal = 1;
+        TablaEscalafon.getRowCount();
+        DefaultTableModel modelo = ((DefaultTableModel)TablaEscalafon.getModel());
+        for(int i =0; i < 20; i++){
+            modelo.removeRow(0);
+        }
+        
+        for(int i =0; i<20;i++){
+            modelo.addRow(new Object[]{"", ""});
+        }
+        
+        
+        //ArrayList<String> escalafon = new ArrayList<String>();
         String query = TextQuery.getText();
         Lucene lucene = new Lucene();
         try {
@@ -303,12 +341,60 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        for (int i=0; i<20;i++){
+        System.out.println(escalafon.size());
+        
+        for (int i=0; i<escalafon.size();i++){
             TablaEscalafon.setValueAt(i+1, i, 0);
             TablaEscalafon.setValueAt(escalafon.get(i).split(",,,")[0], i, 1);
+            if(i == 19){
+                break;
+            }
+            escalafonTemporal = escalafonTemporal+1;
         }
+        System.out.println(escalafonTemporal);
         
-    }//GEN-LAST:event_BotonQueryActionPerformed
+    }//GEN-LAST:event_BotonBuscarQueryActionPerformed
+
+    private void BotonSiguienteEscalafonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonSiguienteEscalafonActionPerformed
+        // TODO add your handling code here:
+        int contador = 0;
+        if(escalafonTemporal < escalafon.size()){
+            for (int i=escalafonTemporal; i<escalafon.size();i++){            
+                TablaEscalafon.setValueAt(i+1, contador, 0);
+                TablaEscalafon.setValueAt(escalafon.get(i).split(",,,")[0], contador, 1);
+                if(contador == 19){
+                    break;
+                }
+                contador = contador+1;
+            }            
+            escalafonTemporal = escalafonTemporal+20;
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Fin de Escalafon");
+        }
+    }//GEN-LAST:event_BotonSiguienteEscalafonActionPerformed
+
+    private void BotonPrevioEscalafonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonPrevioEscalafonActionPerformed
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        int contador = 0;
+        
+        if(escalafonTemporal-20 > 0){
+            escalafonTemporal = escalafonTemporal - 40;
+            for (int i=escalafonTemporal; i<escalafon.size();i++){            
+                TablaEscalafon.setValueAt(i+1, contador, 0);
+                TablaEscalafon.setValueAt(escalafon.get(i).split(",,,")[0], contador, 1);
+                if(contador == 19){
+                    break;
+                }
+                contador = contador+1;
+            }            
+            escalafonTemporal = escalafonTemporal+20;
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Fin de Escalafon");
+        }        
+    }//GEN-LAST:event_BotonPrevioEscalafonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -346,7 +432,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }
     
     public void Archivos() throws IOException{
-        final File folder = new File("C:/Users/AARON/Documents/TEC/RIT/TP2 - RIT - 2018ii");
+        final File folder = new File("C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii");
         List<String> ListaArchivos = new ArrayList<String>();
         ListaArchivos = listFilesForFolder(folder);
         System.out.println(ListaArchivos);
@@ -370,7 +456,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }
     
     public void Indexar() throws IOException, FileNotFoundException, URISyntaxException, ParseException{
-        final File folder = new File("C:/Users/AARON/Documents/TEC/RIT/TP2 - RIT - 2018ii");
+        final File folder = new File("C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii");
         List<String> ListaArchivos = new ArrayList<String>();
         ListaArchivos = listFilesForFolder(folder);        
         int FilaSeleccionada = TablaIndice.getSelectedRow();
@@ -390,7 +476,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
         IndexWriter w = new IndexWriter(index, config);
         
-        File f = new File("C:/Users/AARON/Documents/TEC/RIT/TP2 - RIT - 2018ii/" +ArchivoSeleccionado);
+        File f = new File("C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii\\" +ArchivoSeleccionado);
         BufferedReader br = new BufferedReader(new FileReader(f)); 
         String st; 
         int Comienza = 0;
@@ -421,7 +507,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     
     
     public void EscribeArchivo(IndexWriter w, List<String> ArchivoEscribir, int Comienza, int Finaliza) throws URISyntaxException, IOException{
-                String FILENAME = "C:/Users/AARON/Documents/TEC/RIT/TP2 - RIT - 2018ii/filename.html";
+                String FILENAME = "C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii\\filename.html";
         	try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILENAME))) {
                         for(int i = 0; i < ArchivoEscribir.size(); i++){
                             bw.write(ArchivoEscribir.get(i));
@@ -433,7 +519,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
 			e.printStackTrace();
 		}
-                File sourceFile = new File("C:/Users/AARON/Documents/TEC/RIT/TP2 - RIT - 2018ii/filename.html");
+                File sourceFile = new File("C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii\\filename.html");
                 org.jsoup.nodes.Document doc = Jsoup.parse(sourceFile, "UTF-8");
                 
                 Element body = doc.body();
@@ -561,10 +647,11 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BotonBuscarQuery;
     private javax.swing.JButton BotonIndexar;
     private javax.swing.JButton BotonIrPagina;
     private javax.swing.JButton BotonLeerArchivo;
-    private javax.swing.JButton BotonQuery;
+    private javax.swing.JButton BotonPrevioEscalafon;
     private javax.swing.JButton BotonSiguienteEscalafon;
     private javax.swing.JLabel LabelArchivo;
     private javax.swing.JLabel LabelEscalafon;
