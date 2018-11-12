@@ -69,6 +69,12 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         BotonIrPagina = new javax.swing.JButton();
         BotonSiguienteEscalafon = new javax.swing.JButton();
         BotonLeerArchivo = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextIndice = new javax.swing.JTextArea();
+        BotonIndice = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextQuery = new javax.swing.JTextArea();
+        BotonQuery = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,8 +131,13 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         jScrollPane2.setViewportView(TablaEscalafon);
 
         BotonIrPagina.setText("Ir  a Página");
+        BotonIrPagina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonIrPaginaActionPerformed(evt);
+            }
+        });
 
-        BotonSiguienteEscalafon.setText("Next");
+        BotonSiguienteEscalafon.setText("Siguiente");
 
         BotonLeerArchivo.setText("Leer Archivos");
         BotonLeerArchivo.addActionListener(new java.awt.event.ActionListener() {
@@ -134,6 +145,23 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 BotonLeerArchivoActionPerformed(evt);
             }
         });
+
+        jTextIndice.setColumns(20);
+        jTextIndice.setRows(5);
+        jScrollPane3.setViewportView(jTextIndice);
+
+        BotonIndice.setText("Elegir indice");
+        BotonIndice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonIndiceActionPerformed(evt);
+            }
+        });
+
+        jTextQuery.setColumns(20);
+        jTextQuery.setRows(5);
+        jScrollPane4.setViewportView(jTextQuery);
+
+        BotonQuery.setText("Buscar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -148,18 +176,30 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(168, 168, 168)
                 .addComponent(BotonIndexar, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(BotonIrPagina, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(355, 355, 355))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(124, 124, 124)
+                        .addComponent(BotonIrPagina, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(373, 373, 373))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(BotonIndice)
+                        .addGap(797, 797, 797))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BotonLeerArchivo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 281, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BotonSiguienteEscalafon, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BotonQuery, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(BotonSiguienteEscalafon, javax.swing.GroupLayout.Alignment.TRAILING)))
                 .addGap(213, 213, 213))
         );
         layout.setVerticalGroup(
@@ -177,15 +217,26 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(BotonLeerArchivo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(BotonIndexar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(BotonIrPagina, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(BotonIndice)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(63, 63, 63))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(BotonSiguienteEscalafon)
-                        .addGap(32, 32, 32)
-                        .addComponent(BotonIrPagina, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(97, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(BotonLeerArchivo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(BotonIndexar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(63, 63, 63))))
+                        .addComponent(BotonQuery)
+                        .addGap(124, 124, 124))))
         );
 
         pack();
@@ -196,7 +247,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             try {
                 // TODO add your handling code here:
                 Indexar();
-            } catch (FileNotFoundException ex) {
+            } catch (FileNotFoundException ex) { 
                 Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ParseException ex) {
                 Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -216,6 +267,14 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_BotonLeerArchivoActionPerformed
+
+    private void BotonIrPaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonIrPaginaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BotonIrPaginaActionPerformed
+
+    private void BotonIndiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonIndiceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BotonIndiceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -445,8 +504,10 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonIndexar;
+    private javax.swing.JButton BotonIndice;
     private javax.swing.JButton BotonIrPagina;
     private javax.swing.JButton BotonLeerArchivo;
+    private javax.swing.JButton BotonQuery;
     private javax.swing.JButton BotonSiguienteEscalafon;
     private javax.swing.JLabel LabelArchivo;
     private javax.swing.JLabel LabelEscalafon;
@@ -454,5 +515,9 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTable TablaIndice;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTextArea jTextIndice;
+    private javax.swing.JTextArea jTextQuery;
     // End of variables declaration//GEN-END:variables
 }
