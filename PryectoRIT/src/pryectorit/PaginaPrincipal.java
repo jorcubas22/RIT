@@ -70,11 +70,11 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         BotonSiguienteEscalafon = new javax.swing.JButton();
         BotonLeerArchivo = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextIndice = new javax.swing.JTextArea();
-        BotonIndice = new javax.swing.JButton();
+        TextIndice = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextQuery = new javax.swing.JTextArea();
+        TextQuery = new javax.swing.JTextArea();
         BotonQuery = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,15 +117,33 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
         LabelArchivo.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         LabelArchivo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        LabelArchivo.setText("Archivos A  Indexar");
+        LabelArchivo.setText("Archivos a  Indexar");
 
         TablaEscalafon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Posición Escalafon", "Nombre Archivo", "Valor Resultante"
+                "Posición Escalafon", "Nombre Archivo"
             }
         ));
         jScrollPane2.setViewportView(TablaEscalafon);
@@ -146,22 +164,22 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jTextIndice.setColumns(20);
-        jTextIndice.setRows(5);
-        jScrollPane3.setViewportView(jTextIndice);
+        TextIndice.setColumns(20);
+        TextIndice.setRows(5);
+        jScrollPane3.setViewportView(TextIndice);
 
-        BotonIndice.setText("Elegir indice");
-        BotonIndice.addActionListener(new java.awt.event.ActionListener() {
+        TextQuery.setColumns(20);
+        TextQuery.setRows(5);
+        jScrollPane4.setViewportView(TextQuery);
+
+        BotonQuery.setText("Buscar");
+        BotonQuery.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonIndiceActionPerformed(evt);
+                BotonQueryActionPerformed(evt);
             }
         });
 
-        jTextQuery.setColumns(20);
-        jTextQuery.setRows(5);
-        jScrollPane4.setViewportView(jTextQuery);
-
-        BotonQuery.setText("Buscar");
+        jLabel1.setText("Dirección del indice");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -176,22 +194,15 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(168, 168, 168)
                 .addComponent(BotonIndexar, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(124, 124, 124)
-                        .addComponent(BotonIrPagina, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(373, 373, 373))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(BotonIndice)
-                        .addGap(797, 797, 797))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(BotonIrPagina, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(373, 373, 373))
+            .addGroup(layout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BotonLeerArchivo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 298, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -200,12 +211,26 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(BotonSiguienteEscalafon, javax.swing.GroupLayout.Alignment.TRAILING)))
-                .addGap(213, 213, 213))
+                .addGap(70, 70, 70))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jLabel1)
+                        .addGap(19, 19, 19))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -217,20 +242,13 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(BotonLeerArchivo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(BotonIndexar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(BotonIrPagina, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(BotonIndice)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(BotonLeerArchivo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(BotonIndexar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BotonIrPagina, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(63, 63, 63))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(BotonSiguienteEscalafon)
@@ -272,9 +290,25 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_BotonIrPaginaActionPerformed
 
-    private void BotonIndiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonIndiceActionPerformed
+    private void BotonQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonQueryActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_BotonIndiceActionPerformed
+        ArrayList<String> escalafon = new ArrayList<String>();
+        String query = TextQuery.getText();
+        Lucene lucene = new Lucene();
+        try {
+            escalafon = lucene.buscar(TextIndice.getText(), query);
+        } catch (ParseException ex) {
+            Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for (int i=0; i<20;i++){
+            TablaEscalafon.setValueAt(i+1, i, 0);
+            TablaEscalafon.setValueAt(escalafon.get(i).split(",,,")[0], i, 1);
+        }
+        
+    }//GEN-LAST:event_BotonQueryActionPerformed
 
     /**
      * @param args the command line arguments
@@ -348,9 +382,9 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 
         StandardAnalyzer analyzer = new StandardAnalyzer();
 
-        String INDEX_DIRECTORY = "C:/Users/AARON/Documents/TEC/RIT/RIT/PryectoRIT/indices";
+        String INDEX_DIRECTORY = TextIndice.getText();
         Directory index = FSDirectory.open(Paths.get(INDEX_DIRECTORY));
-        Arrays.stream(new File("C:/Users/AARON/Documents/TEC/RIT/RIT/PryectoRIT/indices").listFiles()).forEach(File::delete);
+        Arrays.stream(new File(TextIndice.getText()).listFiles()).forEach(File::delete);
 
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
 
@@ -383,9 +417,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         
         w.close();
         
-        Lucene lucene = new Lucene();
-        lucene.buscar("C:/Users/AARON/Documents/TEC/RIT/RIT/PryectoRIT/indices", "wikipedia");
-    }
+        }
     
     
     public void EscribeArchivo(IndexWriter w, List<String> ArchivoEscribir, int Comienza, int Finaliza) throws URISyntaxException, IOException{
@@ -408,7 +440,8 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 Document DocumentoRecuperado = Jsoup.parse(body.wholeText());
                 Element body2 = DocumentoRecuperado.body();
                 String Cuerpo = body2.ownText();
-                Cuerpo = StringUtils.stripAccents(Cuerpo);
+                Cuerpo = stripAccents(Cuerpo);
+                Cuerpo = Cuerpo.replaceAll("[^a-zA-Z0-9Ññ]", " ");
                 
                 /* Buscar Headers*/
                 Elements buscaHeaders = doc.select("h1, h2, h3, h4, h5, h6, h7, h8, h9");
@@ -463,6 +496,9 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                     headers += temporal2 + " ";
                 }
                 
+                headers = stripAccents(headers);
+                headers = headers.replaceAll("[^a-zA-Z0-9Ññ]", " ");
+                
                 /* Busca Títulos*/
                 Elements Title = doc.select("title");
                 String titulo = "";
@@ -470,7 +506,9 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                     String temporal2 = Title.get(i).ownText();
                     titulo += temporal2 + " ";
                 }
-                titulo = StringUtils.stripAccents(titulo);
+                String tituloOriginal = titulo;
+                titulo = stripAccents(titulo);
+                titulo = titulo.replaceAll("[^a-zA-Z0-9Ññ]", " ");
 
                 
                 /* Busqueda de <a>*/
@@ -481,7 +519,8 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                     HyperLink += temporal2 + " ";
                 }
                 
-                HyperLink = StringUtils.stripAccents(HyperLink);
+                HyperLink = stripAccents(HyperLink);
+                HyperLink = HyperLink.replaceAll("[^a-zA-Z0-9Ññ]", " ");
                 HyperLink = HyperLink.replaceAll("[^\\p{IsDigit}\\p{IsAlphabetic}]", " ");
                 
                 
@@ -495,16 +534,34 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 
                 
                 Lucene lucene = new Lucene();
-                lucene.indexar(w, titulo, Cuerpo, HyperLink, headers, Integer.toString(Comienza), Integer.toString(Finaliza));
+                
+                lucene.indexar(w, tituloOriginal, titulo.toLowerCase(), Cuerpo.toLowerCase(), HyperLink.toLowerCase(), headers.toLowerCase(), Integer.toString(Comienza).toLowerCase(), Integer.toString(Finaliza).toLowerCase());
                 
                 
                 
     }
     
+    public String stripAccents(String str){
+        String ORIGINAL = "ÁáÉéÍíÓóÚúÜü";
+        String REPLACEMENT = "AaEeIiOoUuUu";
+
+            if (str == null) {
+                return null;
+            }
+            char[] array = str.toCharArray();
+            for (int index = 0; index < array.length; index++) {
+                int pos = ORIGINAL.indexOf(array[index]);
+                if (pos > -1) {
+                    array[index] = REPLACEMENT.charAt(pos);
+                }
+            }
+            return new String(array);
+        
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonIndexar;
-    private javax.swing.JButton BotonIndice;
     private javax.swing.JButton BotonIrPagina;
     private javax.swing.JButton BotonLeerArchivo;
     private javax.swing.JButton BotonQuery;
@@ -513,11 +570,12 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel LabelEscalafon;
     private javax.swing.JTable TablaEscalafon;
     private javax.swing.JTable TablaIndice;
+    private javax.swing.JTextArea TextIndice;
+    private javax.swing.JTextArea TextQuery;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextArea jTextIndice;
-    private javax.swing.JTextArea jTextQuery;
     // End of variables declaration//GEN-END:variables
 }
