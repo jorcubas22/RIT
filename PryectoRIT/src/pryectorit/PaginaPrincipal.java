@@ -308,11 +308,63 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_BotonLeerArchivoActionPerformed
 
     private void BotonIrPaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonIrPaginaActionPerformed
-        // TODO add your handling code here:
         
-        int agarrada = TablaEscalafon.getSelectedRow();
-        String BodyEscalafon = escalafon.get(agarrada).split(",,,")[0];
-        System.out.println(BodyEscalafon);
+        BufferedReader br = null;
+        try {
+            // TODO add your handling code here:
+            
+            int agarrada = (escalafonTemporal - 20) + TablaEscalafon.getSelectedRow();
+            int inicia = Integer.parseInt(escalafon.get(agarrada).split(",,,")[1]);
+            int finaliza = Integer.parseInt(escalafon.get(agarrada).split(",,,")[2]);
+
+            File folder = new File("C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii");
+            List<String> ListaArchivos = new ArrayList<String>();
+            ListaArchivos = listFilesForFolder(folder);        
+            
+            int FilaSeleccionada = TablaIndice.getSelectedRow();
+            ListaArchivos.get(FilaSeleccionada);
+            String ArchivoSeleccionado = ListaArchivos.get(FilaSeleccionada);
+            
+            File f = new File("C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii\\" +ArchivoSeleccionado);
+            br = new BufferedReader(new FileReader(f));
+            String st;
+            int contador = 0;
+            String body = "";
+            while ((st = br.readLine()) != null){
+                contador+=1;
+                if(contador >= inicia){
+                    body += st;
+                    if(contador == finaliza)
+                        break;
+                }
+            }
+
+            String FILENAME = "C:\\Users\\Jorge\\Documents\\TEC\\AbrePagina\\filename.html";
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILENAME))) {
+                    System.out.println("YASSSS");
+                    bw.write(body);
+		    System.out.println("Done");
+                    } catch (IOException e) {
+
+                            e.printStackTrace();
+                    }  
+            String url = "file:///C:/Users/Jorge/Documents/TEC/AbrePagina/filename.html";
+            URI oURL = new URI(url);
+            Desktop.getDesktop().browse(oURL);
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                br.close();
+            } catch (IOException ex) {
+                Logger.getLogger(PaginaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         
     }//GEN-LAST:event_BotonIrPaginaActionPerformed
 
@@ -456,7 +508,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }
     
     public void Indexar() throws IOException, FileNotFoundException, URISyntaxException, ParseException{
-        final File folder = new File("C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii");
+        File folder = new File("C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii");
         List<String> ListaArchivos = new ArrayList<String>();
         ListaArchivos = listFilesForFolder(folder);        
         int FilaSeleccionada = TablaIndice.getSelectedRow();
