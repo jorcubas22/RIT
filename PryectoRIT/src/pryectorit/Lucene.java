@@ -192,12 +192,12 @@ public class Lucene {
     public void addDoc(IndexWriter w, String titleOriginal, String title, String body, String a, String h, String pinicial, String pfinal) throws IOException {
         Document doc = new Document();
         doc.add(new TextField("title", title, Field.Store.YES));
-        doc.add(new StringField("a", a, Field.Store.YES));
+        doc.add(new TextField("a", a, Field.Store.YES));
         doc.add(new TextField("h", h, Field.Store.YES));
         doc.add(new TextField("body", body, Field.Store.YES));
-        doc.add(new StringField("pinicial", pinicial, Field.Store.YES));
-        doc.add(new StringField("pfinal", pfinal, Field.Store.YES));
-        doc.add(new StringField("titleOriginal", titleOriginal, Field.Store.YES));
+        doc.add(new TextField("pinicial", pinicial, Field.Store.YES));
+        doc.add(new TextField("pfinal", pfinal, Field.Store.YES));
+        doc.add(new TextField("titleOriginal", titleOriginal, Field.Store.YES));
 
         // use a string field for isbn because we don't want it tokenized
         //doc.add(new StringField("isbn", isbn, Field.Store.YES));
