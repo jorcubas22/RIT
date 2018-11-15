@@ -317,15 +317,16 @@ public class PaginaPrincipal extends javax.swing.JFrame {
             int inicia = Integer.parseInt(escalafon.get(agarrada).split(",,,")[1]);
             int finaliza = Integer.parseInt(escalafon.get(agarrada).split(",,,")[2]);
 
-            File folder = new File("C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii");
+            /*File folder = new File("C:\\Users\\AARON\\Documents\\TEC\\RIT\\TP2 - RIT - 2018ii");
             List<String> ListaArchivos = new ArrayList<String>();
             ListaArchivos = listFilesForFolder(folder);        
             
             int FilaSeleccionada = TablaIndice.getSelectedRow();
-            ListaArchivos.get(FilaSeleccionada);
-            String ArchivoSeleccionado = ListaArchivos.get(FilaSeleccionada);
+            ListaArchivos.get(FilaSeleccionada);*/
             
-            File f = new File("C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii\\" +ArchivoSeleccionado);
+            String ArchivoSeleccionado = escalafon.get(agarrada).split(",,,")[3];
+            
+            File f = new File("C:\\Users\\AARON\\Documents\\TEC\\RIT\\TP2 - RIT - 2018ii\\" +ArchivoSeleccionado);
             br = new BufferedReader(new FileReader(f));
             String st;
             int contador = 0;
@@ -339,7 +340,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 }
             }
 
-            String FILENAME = "C:\\Users\\Jorge\\Documents\\TEC\\AbrePagina\\filename.html";
+            String FILENAME = "C:\\Users\\AARON\\Documents\\TEC\\RIT\\filename.html";
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILENAME))) {
                     System.out.println("YASSSS");
                     bw.write(body);
@@ -348,7 +349,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
                             e.printStackTrace();
                     }  
-            String url = "file:///C:/Users/Jorge/Documents/TEC/AbrePagina/filename.html";
+            String url = "file:///C:/Users/AARON/Documents/TEC/RIT/filename.html";
             URI oURL = new URI(url);
             Desktop.getDesktop().browse(oURL);
 
@@ -484,7 +485,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }
     
     public void Archivos() throws IOException{
-        final File folder = new File("C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii");
+        final File folder = new File("C:\\Users\\AARON\\Documents\\TEC\\RIT\\TP2 - RIT - 2018ii");
         List<String> ListaArchivos = new ArrayList<String>();
         ListaArchivos = listFilesForFolder(folder);
         System.out.println(ListaArchivos);
@@ -508,7 +509,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }
     
     public void Indexar() throws IOException, FileNotFoundException, URISyntaxException, ParseException{
-        File folder = new File("C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii");
+        File folder = new File("C:\\Users\\AARON\\Documents\\TEC\\RIT\\TP2 - RIT - 2018ii");
         List<String> ListaArchivos = new ArrayList<String>();
         ListaArchivos = listFilesForFolder(folder);        
         int FilaSeleccionada = TablaIndice.getSelectedRow();
@@ -528,7 +529,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
         IndexWriter w = new IndexWriter(index, config);
         
-        File f = new File("C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii\\" +ArchivoSeleccionado);
+        File f = new File("C:\\Users\\AARON\\Documents\\TEC\\RIT\\TP2 - RIT - 2018ii\\" +ArchivoSeleccionado);
         BufferedReader br = new BufferedReader(new FileReader(f)); 
         String st; 
         int Comienza = 0;
@@ -546,7 +547,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 }
                 if(words[i].equals("</html>")){
                     Finaliza = contador;
-                    EscribeArchivo(w, where, Comienza, Finaliza);
+                    EscribeArchivo(w, where, Comienza, Finaliza, ArchivoSeleccionado);
                     where = new ArrayList<String>();
                 }
             }
@@ -554,24 +555,25 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         //System.out.println(where.size());
         
         w.close();
+        System.out.println("Listo");
         
         }
     
     
-    public void EscribeArchivo(IndexWriter w, List<String> ArchivoEscribir, int Comienza, int Finaliza) throws URISyntaxException, IOException{
-                String FILENAME = "C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii\\filename.html";
+    public void EscribeArchivo(IndexWriter w, List<String> ArchivoEscribir, int Comienza, int Finaliza, String nombreArchivo) throws URISyntaxException, IOException{
+                String FILENAME = "C:\\Users\\AARON\\Documents\\TEC\\RIT\\TP2 - RIT - 2018ii\\filename.html";
         	try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILENAME))) {
                         for(int i = 0; i < ArchivoEscribir.size(); i++){
                             bw.write(ArchivoEscribir.get(i));
                             bw.write(" ");
                         }
-			System.out.println("Done");
+			//System.out.println("Done");
 
 		} catch (IOException e) {
 
 			e.printStackTrace();
 		}
-                File sourceFile = new File("C:\\Users\\Jorge\\Documents\\TEC\\VII Semestre\\RIT 2\\TP2 - RIT - 2018ii\\filename.html");
+                File sourceFile = new File("C:\\Users\\AARON\\Documents\\TEC\\RIT\\TP2 - RIT - 2018ii\\filename.html");
                 org.jsoup.nodes.Document doc = Jsoup.parse(sourceFile, "UTF-8");
                 
                 Element body = doc.body();
@@ -673,7 +675,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
                 
                 Lucene lucene = new Lucene();
                 
-                lucene.indexar(w, tituloOriginal, titulo.toLowerCase(), Cuerpo.toLowerCase(), HyperLink.toLowerCase(), headers.toLowerCase(), Integer.toString(Comienza).toLowerCase(), Integer.toString(Finaliza).toLowerCase());
+                lucene.indexar(w, tituloOriginal, titulo.toLowerCase(), Cuerpo.toLowerCase(), HyperLink.toLowerCase(), headers.toLowerCase(), Integer.toString(Comienza).toLowerCase(), Integer.toString(Finaliza).toLowerCase(), nombreArchivo);
                 
                 
                 

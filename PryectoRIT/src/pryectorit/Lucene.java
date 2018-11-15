@@ -96,24 +96,18 @@ public class Lucene {
 
         // the "title" arg specifies the default field to use
         // when no field is explicitly specified in the query.
-        Query q = new QueryParser("body", analyzerspanish).parse(querystr);
         
-         
-      /*  BooleanClause bclause = new BooleanClause(q,BooleanClause.Occur.SHOULD);
+        Query q;
         
-        BooleanClause bclause2 = new BooleanClause(q,BooleanClause.Occur.SHOULD);
+        if(busqueda.contains("titulo:") || busqueda.contains("ref:")){
+                    q = new QueryParser("body", analyzer).parse(querystr);
+        }
+        else{
+                    q = new QueryParser("body", analyzerspanish).parse(querystr);
+
+        }
         
-        BooleanClause[] clause = new BooleanClause[2];
-        
-        clause[0]=bclause;
-        clause[1]=bclause2;
-        
-        BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();
-        
-        booleanQuery.add(bclause);
-        booleanQuery.add(bclause2);.build()*/
-        
-        
+       
         // 3. search
         int hitsPerPage = 100;
         IndexReader reader = DirectoryReader.open(index);
@@ -128,7 +122,7 @@ public class Lucene {
             Document d = searcher.doc(docId);
             //System.out.println((i + 1) + ". " + d.get("isbn") + "\t" + d.get("title"));
             System.out.println((i + 1) + " " + d.get("titleOriginal"));
-            String posicion = d.get("titleOriginal")+",,,"+d.get("pinicial")+",,,"+d.get("pfinal");
+            String posicion = d.get("titleOriginal")+",,,"+d.get("pinicial")+",,,"+d.get("pfinal")+",,,"+d.get("nombreArchivo");
             escalafon.add(posicion);
         }
 
@@ -140,7 +134,7 @@ public class Lucene {
     }
     
     
-    public void indexar(IndexWriter w, String tituloOriginal, String title, String body, String a, String h, String pinicial, String pfinal) throws IOException{
+    public void indexar(IndexWriter w, String tituloOriginal, String title, String body, String a, String h, String pinicial, String pfinal, String nombreArchivo) throws IOException{
         
         //Steming body
         
@@ -159,7 +153,7 @@ public class Lucene {
             result+=" ";
             
         }
-        System.out.println(result);
+        //System.out.println(result);
         body = result;
         stream.close();
         
@@ -177,27 +171,29 @@ public class Lucene {
             result+=" ";
             
         }
-        System.out.println(result);
+        //System.out.println(result);
         h = result;
         stream.close();
         
         //System.out.println(title);
 
-        addDoc(w, tituloOriginal, title, body, a, h, pinicial, pfinal);
+        addDoc(w, tituloOriginal, title, body, a, h, pinicial, pfinal, nombreArchivo);
         
     }
     
     
 
-    public void addDoc(IndexWriter w, String titleOriginal, String title, String body, String a, String h, String pinicial, String pfinal) throws IOException {
+    public void addDoc(IndexWriter w, String titleOriginal, String title, String body, String a, String h, String pinicial, String pfinal, String nombreArchivo) throws IOException {
         Document doc = new Document();
-        doc.add(new TextField("title", title, Field.Store.YES));
-        doc.add(new TextField("a", a, Field.Store.YES));
-        doc.add(new TextField("h", h, Field.Store.YES));
+        doc.add(new TextField("titulo", title, Field.Store.YES));
+        doc.add(new TextField("encab", a, Field.Store.YES));
+        doc.add(new TextField("ref", h, Field.Store.YES));
         doc.add(new TextField("body", body, Field.Store.YES));
         doc.add(new TextField("pinicial", pinicial, Field.Store.YES));
         doc.add(new TextField("pfinal", pfinal, Field.Store.YES));
         doc.add(new TextField("titleOriginal", titleOriginal, Field.Store.YES));
+        doc.add(new TextField("nombreArchivo", nombreArchivo, Field.Store.YES));
+
 
         // use a string field for isbn because we don't want it tokenized
         //doc.add(new StringField("isbn", isbn, Field.Store.YES));
